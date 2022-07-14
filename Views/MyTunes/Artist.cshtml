@@ -1,0 +1,7 @@
+﻿@using Assignment.Models.ViewModel
+@model ArtistSelectViewModel
+
+<form>
+    <select asp-items=@Model.ArtistSelectItems name="ArtistId"></select>
+    <button type="submit">Select</button>
+</form>
