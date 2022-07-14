@@ -35,7 +35,11 @@
                 @Html.DisplayFor(modelItem => item.Artist.Id)
             </td>
             <td>
-                <a asp-action="Like" asp-route-id="@item.Id">Like</a>
+                <form asp-action="Like" method="post">
+                    <input hidden type="text" value="@item.Id" />
+                    <button type="submit">Like</button>
+                </form>
+                
             </td>
         </tr>
 }

@@ -19,6 +19,7 @@ namespace Assignment.Models
         public virtual DbSet<Artist> Artists { get; set; } = null!;
         public virtual DbSet<Collection> Collections { get; set; } = null!;
         public virtual DbSet<Song> Songs { get; set; } = null!;
+        public virtual DbSet<User> Users { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -35,20 +36,12 @@ namespace Assignment.Models
             {
                 entity.ToTable("Artist");
 
-                entity.Property(e => e.Id).HasColumnName("ID");
-
                 entity.Property(e => e.Name).HasMaxLength(50);
             });
 
             modelBuilder.Entity<Collection>(entity =>
             {
                 entity.ToTable("Collection");
-
-                entity.Property(e => e.Id).HasColumnName("ID");
-
-                entity.Property(e => e.ArtistId).HasColumnName("ArtistID");
-
-                entity.Property(e => e.SongId).HasColumnName("SongID");
 
                 entity.HasOne(d => d.Artist)
                     .WithMany(p => p.Collections)
@@ -61,15 +54,17 @@ namespace Assignment.Models
                     .HasForeignKey(d => d.SongId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Collection_Song");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.Collections)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Collection_Users");
             });
 
             modelBuilder.Entity<Song>(entity =>
             {
                 entity.ToTable("Song");
-
-                entity.Property(e => e.Id).HasColumnName("ID");
-
-                entity.Property(e => e.ArtistId).HasColumnName("ArtistID");
 
                 entity.Property(e => e.Name).HasMaxLength(50);
 
@@ -78,6 +73,11 @@ namespace Assignment.Models
                     .HasForeignKey(d => d.ArtistId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Song_Artist");
+            });
+
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity.Property(e => e.Name).HasMaxLength(50);
             });
 
             OnModelCreatingPartial(modelBuilder);

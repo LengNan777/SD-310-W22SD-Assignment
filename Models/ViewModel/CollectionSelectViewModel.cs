@@ -12,7 +12,7 @@ namespace Assignment.Models.ViewModel
             CollectionSelectItems = new List<SelectListItem>();
             foreach (Collection c in collections)
             {
-                CollectionSelectItems.Add(new SelectListItem(c.Song.ToString(), c.Id.ToString()));
+                CollectionSelectItems.Add(new SelectListItem(c.User.Name.ToString(), c.Id.ToString()));
                 //new SelectListItem() { Text = a.Name, Value = a.Id.ToString() }
                 //+c.Id.ToString()
             }

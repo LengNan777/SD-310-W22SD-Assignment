@@ -26,14 +26,20 @@ namespace Assignment.Controllers
             return View(vm);
         }
 
-        public IActionResult Like()
+        [HttpPost]
+        public IActionResult Like(int Id)
         {
+            Song likedSong = _db.Songs.First(s => s.Id == Id);
+            likedSong.Likes++;
+            _db.SaveChanges();
             return RedirectToAction("Index");
         }
 
         public IActionResult Collection()
         {
-            CollectionSelectViewModel vm = new CollectionSelectViewModel(_db.Collections.ToList());
+            CollectionSelectViewModel vm = new CollectionSelectViewModel(_db.Collections.Include(c=>c.User).ToList());
+            //return View(_db.Collections.Include(c => c.User).ToList());
+
             return View(vm);
         }
     }
