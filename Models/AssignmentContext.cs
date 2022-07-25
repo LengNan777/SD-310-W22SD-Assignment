@@ -18,6 +18,7 @@ namespace Assignment.Models
 
         public virtual DbSet<Artist> Artists { get; set; } = null!;
         public virtual DbSet<Collection> Collections { get; set; } = null!;
+        public virtual DbSet<Order> Orders { get; set; } = null!;
         public virtual DbSet<Song> Songs { get; set; } = null!;
         public virtual DbSet<User> Users { get; set; } = null!;
 
@@ -43,12 +44,6 @@ namespace Assignment.Models
             {
                 entity.ToTable("Collection");
 
-                entity.HasOne(d => d.Artist)
-                    .WithMany(p => p.Collections)
-                    .HasForeignKey(d => d.ArtistId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Collection_Artist");
-
                 entity.HasOne(d => d.Song)
                     .WithMany(p => p.Collections)
                     .HasForeignKey(d => d.SongId)
@@ -60,6 +55,25 @@ namespace Assignment.Models
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Collection_Users");
+            });
+
+            modelBuilder.Entity<Order>(entity =>
+            {
+                entity.ToTable("Order");
+
+                entity.Property(e => e.Date).HasColumnType("date");
+
+                entity.HasOne(d => d.Song)
+                    .WithMany(p => p.Orders)
+                    .HasForeignKey(d => d.SongId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Order_Song");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.Orders)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Order_Users");
             });
 
             modelBuilder.Entity<Song>(entity =>
