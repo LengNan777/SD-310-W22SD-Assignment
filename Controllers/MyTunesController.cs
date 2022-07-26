@@ -122,7 +122,7 @@ namespace Assignment.Controllers
                 Information = $"Congratulations! You buy {s.Name} successfully!";
                 //ViewData["purchase"] = true;
                 u.Balance -= s.Price;
-                _db.Orders.Add(new Order { UserId = u.Id, SongId = s.Id, Date = new DateTime() });
+                _db.Orders.Add(new Order { UserId = u.Id, SongId = s.Id, Date = DateTime.Now });
                 _db.Collections.Add(new Collection { UserId = u.Id, SongId = s.Id });
                 _db.SaveChanges();
                 
@@ -135,21 +135,28 @@ namespace Assignment.Controllers
         {
             string RedeemInformation;
 
+            User u = _db.Users.First(u => u.Id == UserId);
+            Song s = _db.Songs.First(s => s.Id == SongId);
             Collection c = _db.Collections.Include(c => c.Song).First(c => c.UserId == UserId && c.SongId == SongId);
             Order o = _db.Orders.First(o => o.UserId == UserId && o.SongId == SongId);
-            if (false)
+            /*if (false)
             {
                 RedeemInformation = "Sorry. We can not redeem the purchase because it was a 30 days before order.";
-            }
-            else
-            {
-                _db.Collections.Remove(c);
-                _db.Orders.Remove(o);
-                _db.SaveChanges();
-                RedeemInformation = $"Congratulations! You redeem the {c.Song.Name} successfully!";
-            }            
+            }*/
+            u.Balance += s.Price;
+            _db.Collections.Remove(c);
+            _db.Orders.Remove(o);
+            _db.SaveChanges();
+            RedeemInformation = $"Congratulations! You redeem the {c.Song.Name} successfully!";
+                       
 
             return RedirectToAction("Collection", new { UserId = c.UserId, RedeemInformation = RedeemInformation });
         }
+
+        /*public IActionResult BackToCollection(int UserId)
+        {
+
+            return RedirectToAction("Collection", UserId = UserId);
+        }*/
     }
 }
