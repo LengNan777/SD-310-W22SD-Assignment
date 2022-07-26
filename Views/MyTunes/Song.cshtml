@@ -1,0 +1,34 @@
+﻿@model IEnumerable<Assignment.Models.Song>
+
+@{
+    ViewData["Title"] = "Song";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Songs of @ViewBag.ArtistName</h1>
+<a asp-action="BackToArtist">Back</a>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Sales)/(Collections)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Sales)
+            </td>
+        </tr>        
+}
+    </tbody>
+</table>

@@ -1,0 +1,25 @@
+﻿@model IGrouping<int,Song>
+@{
+    ViewData["Title"] = "Top";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Sales)
+            </td>
+        </tr>        
+}
+
+<h1>Top</h1>
+
+<h2>Top Selling Song:</h2>
+<p></p>
+
+<h2>Top Selling Artist:</h2>
+
+<h2>Top 3 Rated Songs:</h2>

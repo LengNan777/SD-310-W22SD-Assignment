@@ -1,0 +1,9 @@
+﻿@using Assignment.Models.ViewModel
+@model UserSelectViewModel
+
+<h1>Users</h1>
+
+<form action="Collection">
+    <select asp-items=@Model.UserSelectItems name="UserId"></select>
+    <button type="submit">Select</button>
+</form>
