@@ -6,11 +6,10 @@
 }
 
 <h1>Collection of @ViewBag.UserName</h1>
+
+<a asp-action="BuyPage" asp-route-UserId="@ViewBag.UserId">Buy</a><br />
 <a asp-action="BackToUser">Back</a>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -20,7 +19,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Song.Artist)
             </th>
-            <th></th>
+            <th>
+                Operation
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -32,6 +33,20 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Song.Artist.Name)
             </td>
+            <td>
+                <form asp-action="Rate" method="post">
+                    <input hidden type="text" name="SongId" value="@item.SongId" />
+                    <input hidden type="text" name="UserId" value="@ViewBag.UserId" />
+                    <button type="submit">Rate</button>
+                </form>
+                <br/>
+                <form asp-action="Redeem" method="post">
+                    <input hidden type="text" name="SongId" value="@item.SongId" />
+                    <input hidden type="text" name="UserId" value="@ViewBag.UserId" />
+                    <button type="submit">Redeem</button>
+                </form>
+            </td>
+            
             @*<td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
@@ -41,3 +56,4 @@
 }
     </tbody>
 </table>
+<h2>@ViewBag.RedeemInformation</h2>
