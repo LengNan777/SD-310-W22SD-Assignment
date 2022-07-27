@@ -1,9 +1,14 @@
 ﻿@using Assignment.Models.ViewModel
 @model UserSelectViewModel
 
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
 <h1>Users</h1>
 
-<form action="Collection">
+<form asp-controller="MyTunes" asp-action="Collection">
     <select asp-items=@Model.UserSelectItems name="UserId"></select>
     <button type="submit">Select</button>
 </form>

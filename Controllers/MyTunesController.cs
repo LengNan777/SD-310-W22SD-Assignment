@@ -84,7 +84,6 @@ namespace Assignment.Controllers
             ViewBag.UserId = UserId;
             ViewBag.Balance = _db.Users.First(u => u.Id == UserId).Balance;
             ViewBag.purchaseDetail = Information;
-            //purchase = null;
             
             List<Song> ownedSongs = _db.Collections.Include(c => c.User).Where(c => c.UserId == UserId).Select(c=>c.Song).ToList();
             List<Song> allSongs = _db.Songs.Include(s=>s.Artist).ToList();
@@ -100,27 +99,13 @@ namespace Assignment.Controllers
             Song s = _db.Songs.First(s => s.Id == SongId);
             string Information;
 
-            //else if (ViewData["purchase"] == true)
-            //{
-            //    ViewBag.purchaseDetail = $"Congratulations! You buy song successfully!";
-
-            //}
-            //else if (purchase == false)
-            //{
-            //    ViewBag.purchaseDetail = "Sorry! You do not have enough money to buy this song.";
-            //}
-
-
             if (u.Balance < s.Price)
             {
                 Information = "Sorry! You do not have enough money to buy this song.";
-                
-                //ViewData["purchase"] = false;
             }
             else
             {
                 Information = $"Congratulations! You buy {s.Name} successfully!";
-                //ViewData["purchase"] = true;
                 u.Balance -= s.Price;
                 _db.Orders.Add(new Order { UserId = u.Id, SongId = s.Id, Date = DateTime.Now });
                 _db.Collections.Add(new Collection { UserId = u.Id, SongId = s.Id });
@@ -139,13 +124,10 @@ namespace Assignment.Controllers
             Song s = _db.Songs.First(s => s.Id == SongId);
             Collection c = _db.Collections.Include(c => c.Song).First(c => c.UserId == UserId && c.SongId == SongId);
             Order o = _db.Orders.First(o => o.UserId == UserId && o.SongId == SongId);
-            /*if (false)
-            {
-                RedeemInformation = "Sorry. We can not redeem the purchase because it was a 30 days before order.";
-            }*/
             u.Balance += s.Price;
             _db.Collections.Remove(c);
             _db.Orders.Remove(o);
+            s.Rating = null;
             _db.SaveChanges();
             RedeemInformation = $"Congratulations! You redeem the {c.Song.Name} successfully!";
                        
@@ -153,10 +135,27 @@ namespace Assignment.Controllers
             return RedirectToAction("Collection", new { UserId = c.UserId, RedeemInformation = RedeemInformation });
         }
 
-        /*public IActionResult BackToCollection(int UserId)
+        [HttpGet]
+        public IActionResult Rate(int SongId)
         {
+            Song s = _db.Songs.First(s => s.Id == SongId);
+            return View(s);
+        }
 
-            return RedirectToAction("Collection", UserId = UserId);
-        }*/
+        [HttpPost]
+        public IActionResult Rate(int SongId,int rate)
+        {
+            Song s = _db.Songs.First(s => s.Id == SongId);
+            s.Rating = rate;
+            _db.SaveChanges();
+            return View(s);
+        }
+
+        public IActionResult Query(string month)
+        {
+            ViewBag.t = month;
+            List<Order> o = _db.Orders.Include(o => o.Song).Where(o => (o.Date).ToString().Substring(0,7) == month).ToList();
+            return View(o);
+        }
     }
 }

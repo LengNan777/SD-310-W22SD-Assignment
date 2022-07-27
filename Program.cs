@@ -27,6 +27,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=MyTunes}/{action=Index}/{id?}");
+    pattern: "{controller=MyTunes}/{action=User}/{id?}");
 
 app.Run();

@@ -34,9 +34,8 @@
                 @Html.DisplayFor(modelItem => item.Song.Artist.Name)
             </td>
             <td>
-                <form asp-action="Rate" method="post">
+                <form asp-action="Rate" method="get">
                     <input hidden type="text" name="SongId" value="@item.SongId" />
-                    <input hidden type="text" name="UserId" value="@ViewBag.UserId" />
                     <button type="submit">Rate</button>
                 </form>
                 <br/>
