@@ -13,11 +13,6 @@ namespace Assignment.Controllers
             _db = context;
         }
 
-        public IActionResult Index()
-        {
-            return View(_db.Songs.Include(s => s.Artist).ToList());          
-        }
-
         public IActionResult Artist()
         {
             ArtistSelectViewModel vm = new ArtistSelectViewModel(_db.Artists.ToList());
@@ -147,9 +142,17 @@ namespace Assignment.Controllers
 
         public IActionResult Query(string month)
         {
-            ViewBag.t = month;
-            List<Order> o = _db.Orders.Include(o => o.Song).Where(o => (o.Date).ToString().Substring(0,7) == month).ToList();
-            return View(o);
+            try
+            {
+                ViewBag.t = month;
+                List<Order> o = _db.Orders.Include(o => o.Song).Where(o => (o.Date).ToString().Substring(0,7) == month).ToList();
+                return View(o);
+            }
+            catch(Exception ex)
+            {
+                return RedirectToAction("Error");
+            }
+            
         }
     }
 }
