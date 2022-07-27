@@ -42,8 +42,6 @@ namespace Assignment.Controllers
         public IActionResult User()
         {
             UserSelectViewModel vm = new UserSelectViewModel(_db.Users.ToList());
-            //return View(_db.Collections.Include(c => c.User).ToList());
-
             return View(vm);
         }
 
@@ -70,14 +68,11 @@ namespace Assignment.Controllers
             return RedirectToAction("User");
         }
 
-        //public IActionResult Top()
-        //{
-        //    List<Song> topSellingSongs = _db.Songs.OrderBy(s => s.Sales).Take(3).ToList();
-        //    IGrouping<int,Song> resultset = (IGrouping<int, Song>)_db.Songs.GroupBy(s => s.ArtistId).Select().ToList();
-
-        //    //List<Artist> topSellingArtists = _db.Artists.FromSqlRaw("SELECT TOP 3 SUM(Sales) FROM Song GROUP BY ArtistId Order BY SUM(Sales)").ToList();
-        //    return View(resultset);
-        //}
+        public IActionResult Top()
+        {
+            List<Song> topSellingSongs = _db.Songs.OrderByDescending(s => s.Sales).Take(3).ToList();
+            return View(topSellingSongs);
+        }
 
         public IActionResult BuyPage(int UserId,string Information)
         {
@@ -94,7 +89,6 @@ namespace Assignment.Controllers
         [HttpPost]
         public IActionResult Buy(int SongId,int UserId)
         {
-            //ViewBag.tt = "tt";
             User u = _db.Users.First(u => u.Id == UserId);
             Song s = _db.Songs.First(s => s.Id == SongId);
             string Information;

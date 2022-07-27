@@ -1,9 +1,26 @@
-﻿@model IGrouping<int,Song>
+﻿@model IEnumerable<Assignment.Models.Song>
 @{
     ViewData["Title"] = "Top";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<h1>Top</h1>
+<br />
+<h2>Top Selling Song:</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Sales)
+            </th>
+        </tr>
+    </thead>
+<tbody>
 @foreach (var item in Model) {
         <tr>
             <td>
@@ -14,12 +31,5 @@
             </td>
         </tr>        
 }
-
-<h1>Top</h1>
-
-<h2>Top Selling Song:</h2>
-<p></p>
-
-<h2>Top Selling Artist:</h2>
-
-<h2>Top 3 Rated Songs:</h2>
+    </tbody>
+</table>
